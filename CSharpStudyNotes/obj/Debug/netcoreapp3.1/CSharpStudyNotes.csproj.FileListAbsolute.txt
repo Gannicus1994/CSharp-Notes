@@ -1,0 +1,13 @@
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\bin\Debug\netcoreapp3.1\CSharpStudyNotes.exe
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\bin\Debug\netcoreapp3.1\CSharpStudyNotes.deps.json
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\bin\Debug\netcoreapp3.1\CSharpStudyNotes.runtimeconfig.json
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\bin\Debug\netcoreapp3.1\CSharpStudyNotes.runtimeconfig.dev.json
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\bin\Debug\netcoreapp3.1\CSharpStudyNotes.dll
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\bin\Debug\netcoreapp3.1\CSharpStudyNotes.pdb
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\obj\Debug\netcoreapp3.1\CSharpStudyNotes.csprojAssemblyReference.cache
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\obj\Debug\netcoreapp3.1\CSharpStudyNotes.AssemblyInfoInputs.cache
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\obj\Debug\netcoreapp3.1\CSharpStudyNotes.AssemblyInfo.cs
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\obj\Debug\netcoreapp3.1\CSharpStudyNotes.csproj.CoreCompileInputs.cache
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\obj\Debug\netcoreapp3.1\CSharpStudyNotes.dll
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\obj\Debug\netcoreapp3.1\CSharpStudyNotes.pdb
+Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\obj\Debug\netcoreapp3.1\CSharpStudyNotes.genruntimeconfig.cache
