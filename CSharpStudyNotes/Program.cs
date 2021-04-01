@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace WindowsFormsApp1
 {
@@ -427,7 +429,7 @@ namespace WindowsFormsApp1
     #endregion
 
 
-    #region 类
+     #region 类
     //private       类的内部可访问
     //internal      程序集内所有类可访问
     //protected     对所有继承该类的类可访问
@@ -2012,6 +2014,9 @@ namespace WindowsFormsApp1
      * LINQ查询可以返回两种类型的结果：
      * 1.可以是一个枚举（可枚举的一组数据，不是枚举类型）
      * 2.可以是一个叫做标量的单一值
+     * 
+     * 
+     * 四、标准查询运算符 
      */
     class Other
     {
@@ -2120,14 +2125,14 @@ namespace WindowsFormsApp1
             public int Score;
         }
 
-        public Student[] students1 = new Student[]
+        public Student[] students = new Student[]
         {
         new Student{StID=1,LastName="Carson"},
         new Student{StID=2,LastName="Klassen"},
         new Student{StID=3,LastName="Fleming"}
         };
 
-        public CourseStudent[] studentsInCourses1 = new CourseStudent[]
+        public CourseStudent[] studentsInCourses = new CourseStudent[]
         {
         new CourseStudent{CourseName="Art",StID=1, Score = 50},
         new CourseStudent{CourseName="Art",StID=2, Score = 60},
@@ -2139,10 +2144,10 @@ namespace WindowsFormsApp1
         void Main()
         {
             //查找所有选择了历史课的学生的姓氏
-            var query = from s in students1                                   //from子句
-                        join c in studentsInCourses1 on s.StID equals c.StID  //join子句
-                        where c.CourseName == "History"
-                        select s.LastName;
+            var query = from student in students                                   //from子句
+                        join courses in studentsInCourses on student.StID equals courses.StID  //join子句
+                        where courses.CourseName == "History"
+                        select student.LastName;
 
             //显示所有选择了历史课的学生的名字
             foreach (var q in query)
@@ -2171,39 +2176,47 @@ namespace WindowsFormsApp1
             new{LName="Smith",FName="Bob",Age=20,Major="CompSci"},
             new{LName="Fleming",FName="Carol",Age=21,Major="History"},
             };
-            var query1 = from student in students2
+            var query2 = from student in students2
                         orderby student.Age
                         select student;
-            foreach (var s in query1)
+            foreach (var s in query2)
             {
                 Console.WriteLine("{0},{1}: {2} - {3}", s.LName, s.FName, s.Age, s.Major);
             }
 
 
             //select... group子句
-            var query2 = from s in students2
-                         select s;
-            foreach (var s in query2)
+            //select子句可以选择对象的某些字段
+            var query3 = from student in students2
+                         select student.LName;
+            foreach (var s in query3)
             {
-                Console.WriteLine("{0},{1}: {2} , {3}", s.LName, s.FName, s.Age, s.Major);
+                Console.WriteLine(s);
             }
 
 
             //group子句
-            var query3 = from s in students2
-                         group s by s.Major;
-            foreach (var s in query3)
+            var query4 = from student in students2
+                         group student by student.Major;
+            foreach (var student in query4)
             {
-                Console.WriteLine("{0}", s.Key);
-                foreach (var t in s)
+                Console.WriteLine("{0}", student.Key);
+                foreach (var t in student)
                 {
-                    Console.WriteLine("      {0},{1}", t.LName, t.FName);
+                    Console.WriteLine("{0}-{1}", t.LName, t.FName);
                 }
             }
+            //History
+            //          Jones-Mary
+            //          Fleming-Carol
+            //CompSci
+            //          Smith-Bob
+
+
 
             //查询延续：into子句
             var groupA1 = new[] { 3, 4, 5, 6 };
-            var groupB1 = new[] { 6, 7, 8, 9 };
+            var groupB1 = new[] { 4, 5, 6, 7 };
             var someInts1 = from a in groupA1
                            join b in groupB1 on a equals b
                            into groupAandB
@@ -2213,17 +2226,151 @@ namespace WindowsFormsApp1
             {
                 Console.WriteLine(a);
             }
+            //4 5 6
+
+
+            //直接语法调用和扩展语法调用时完全相等的
+            int count1 = Enumerable.Count(groupA1);
+            int firstnum1 = Enumerable.First(groupA1);
+
+            int count2 = groupA1.Count();
+            int firstnum2 = groupA1.First();
+
+
+            //使用lambda表达式参数的示例
+            //                       寻找奇数的lambda表达式
+            var count3 = groupA1.Count(n => n % 2 == 1);
+
+
+            //使用委托参数的示例
+            Func<int, bool> myDel = new Func<int, bool>(IsOdd);
+            int count4 = groupA1.Count(myDel);
+
+
+            //使用匿名方法
+            Func<int, bool> myDe2 = delegate (int x)
+             {
+                 return x % 2 == 1;
+             };
+            int count5 = groupA1.Count(myDe2);
+        }
+
+        static bool IsOdd(int x)//委托对象使用的方法
+        {
+            return x % 2 == 1;//如果是奇数返回true
         }
     }
 
-    
-
-
- 
 
 
 
 
+
+
+
+
+
+    #endregion
+
+
+    #region 异步编程
+    /* 
+     * 一、线程
+     * 1.默认情况下，一个进程只包含一个线程，从程序的开始一直执行到结束
+     * 2.线程可以派生其他线程，因此在任意时刻，一个进程都可能包含不同状态的多个线程，
+     * 来执行程序的不同部分
+     * 3.如果一个进程拥有多个线程，它们将共享进程的资源
+     * 4.系统为处理器执行所规划的单元是线程，不是进程
+     * 
+     * 
+     * 二、异步方法
+     * 1.方法头中包含async方法修饰符，修饰符本身并不能创建任何异步操作
+     * 2.包含一个或多个await表达式，表示可以异步完成的任务
+     * 3.必须具备以下三种返回类型。第二种（Task）和第三种（Task<T>）的返回对象表示将在未来完成的工作，
+     * 调用方法和异步方法可以继续执行。  void  Task  Task<T>
+     * 4.异步方法的参数可以为任意类型任意数量，但不能为out或ref参数
+     * 5.按照约定，异步方法的名称应该以Async为后缀
+     * 6.除了方法以外，Lambda表达式和匿名方法也可以作为异步对象
+     * 
+     * 7.Task<T>：如果调用方法要从调用中获取一个T类型的值，异步方法的返回类型就必须是Task<T>
+     * 调用方法将通过读取Task的Result属性来获取这个T类型的值
+     *  Task<int> someTask = DoStuff.CalculateSumAsync(5,6);
+     *  ...
+     *  Console.WriteLine("Value:{0}", someTask.Result);
+     *  
+     * 
+     * 8.Task：如果调用方法不需要从异步方法中返回某个值，但需要检查异步方法的状态，那么异步方法可以返回
+     * 一个Task类型的对象。这时，即使异步方法中出现了return语句，也不会返回任何东西
+     *  Task someTask = DoStuff.CalculateSumAsync(5,6);
+     *  ...
+     *  someTask.Wait();
+     *  
+     *  
+     *  9.void：如果调用方法仅仅想执行异步方法，则不需要与它做任何进一步的交互时，异步方法可以
+     *  返回void类型，即使异步方法包含任何return语句，也不会返回任何东西
+     */
+
+    class AsyncClass
+    {
+        //关键字async      返回类型Task<int>
+        async Task<int> CountCharactersAsync(int id, string site)
+        {
+            WebClient wc = new WebClient();
+            string result = await wc.DownloadStringTaskAsync(new Uri(site));//await表达式
+            return result.Length;
+        }
+
+        //关键字async      返回类型Task
+        async Task CountCharactersAsync2(int id, string site)
+        {
+            WebClient wc = new WebClient();
+            string result = await wc.DownloadStringTaskAsync(new Uri(site));//await表达式
+        }
+
+        //关键字async      返回类型void
+        async void CountCharactersAsync3(int id, string site)
+        {
+            WebClient wc = new WebClient();
+            string result = await wc.DownloadStringTaskAsync(new Uri(site));//await表达式
+        }
+
+        //Func<int> 委托兼容的Lanmbda表达式
+        public int Get10()
+        {
+            return 10;
+        }
+        public async Task DoWorkAsync()
+        {
+            Func<int> ten = new Func<int>(Get10);
+            int a = await Task.Run(ten);
+            int b = await Task.Run(new Func<int>(Get10));
+            int c = await Task.Run(() => { return 10; });
+        }
+
+
+        //用可接受Func委托的形式创建一个Lanmbda表达式
+        private static int GetSum(int a, int b)
+        {
+            return a + b;
+        }
+
+        public static async Task DoWorkAsync2()
+        {
+            int a = await Task.Run(()=>GetSum(5,6));
+        }
+    }
+
+    class FuncProgram
+    {
+        static void Main()
+        {
+            Task t = (new AsyncClass()).DoWorkAsync();
+            t.Wait();
+
+            Task t2 = AsyncClass.DoWorkAsync2();
+            t2.Wait();
+        }
+    }
 
     #endregion
 
