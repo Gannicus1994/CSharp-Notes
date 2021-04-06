@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace WindowsFormsApp1
 {
@@ -65,7 +66,7 @@ namespace WindowsFormsApp1
     //  c.返回类型和形参的名称不是签名的一部分
 
     //6.命名参数
-    //  a.显示指定参数的名字，就可以用任意顺序在方法调用中列出实参
+    //  a.显式指定参数的名字，就可以用任意顺序在方法调用中列出实参
 
     //7.可选参数
     //  a.在方法声明的时候为参数提供默认值
@@ -174,12 +175,12 @@ namespace WindowsFormsApp1
         private int hourValue;//属性的后备字段：会分配内存
         public int HourValue
         {
-            //set访问器：拥有一个单独的、隐式的值参，名称为value，与属性的类型相同，不能显示被调用
+            //set访问器：拥有一个单独的、隐式的值参，名称为value，与属性的类型相同，不能显式被调用
             set
             {
                 hourValue = value > 24 ? 24 : value;
             }
-            //get访问器：没有参数，拥有一个和属性类型相同的返回类型，不能显示被调用
+            //get访问器：没有参数，拥有一个和属性类型相同的返回类型，不能显式被调用
             //访问器的访问级别 修饰
             private get
             {
@@ -429,7 +430,7 @@ namespace WindowsFormsApp1
     #endregion
 
 
-     #region 类
+    #region 类
     //private       类的内部可访问
     //internal      程序集内所有类可访问
     //protected     对所有继承该类的类可访问
@@ -708,7 +709,7 @@ namespace WindowsFormsApp1
             ss2 = ss1;//赋值给结构实例
 
             //不使用new运算符创建结构的实例
-            //在显示设置数据成员后，才能使用它们的值
+            //在显式设置数据成员后，才能使用它们的值
             //在对所有数据成员赋值之后，才能调用任何函数成员
             StructSimple ss3;
             //Console.WriteLine("{0},{1}", ss3.X, ss3.Y);//编辑错误，还未被赋值
@@ -782,7 +783,7 @@ namespace WindowsFormsApp1
     //数组协变
     //1.某个对象不是数组额基类型也可以把它赋值给数组元素
     //2.数组是引用类型数组
-    //3.在赋值的对象类型和数组基类型之间有隐式转换或显示转换
+    //3.在赋值的对象类型和数组基类型之间有隐式转换或显式转换
     //4.值类型数组没有协变   
 
     //clone方法
@@ -1354,7 +1355,7 @@ namespace WindowsFormsApp1
 
     //拆箱转换
     //1.装箱后的对象转换成值类型的过程
-    //2.拆箱是显示转换
+    //2.拆箱是显式转换
 
 
     //is运算符
@@ -2000,20 +2001,20 @@ namespace WindowsFormsApp1
 
     /*
      * 一、匿名类型
-     * 1.匿名类型只能和局部变量配合使用，不能用于类成员
-     * 2.由于匿名类型没有名字。必须用var关键字作为变量类型
-     * 3.不能设置匿名类型对象的属性。编译器为匿名类型创建的属性是只读的
+     *  1.匿名类型只能和局部变量配合使用，不能用于类成员
+     *  2.由于匿名类型没有名字。必须用var关键字作为变量类型
+     *  3.不能设置匿名类型对象的属性。编译器为匿名类型创建的属性是只读的
      *
      *
      * 二、方法语法和查询语法
-     * 1.方法语法：使用标准的方法调用。是命令式的，指明了查询方法的调用顺序
-     * 2.查询语法：使用表达式书写。是声明式的，查询描述的是你想返回的东西，并没有指明如何执行这个查询
+     *  1.方法语法：使用标准的方法调用。是命令式的，指明了查询方法的调用顺序
+     *  2.查询语法：使用表达式书写。是声明式的，查询描述的是你想返回的东西，并没有指明如何执行这个查询
      * 
      * 
      * 三、查询变量
-     * LINQ查询可以返回两种类型的结果：
-     * 1.可以是一个枚举（可枚举的一组数据，不是枚举类型）
-     * 2.可以是一个叫做标量的单一值
+     *  LINQ查询可以返回两种类型的结果：
+     *      1.可以是一个枚举（可枚举的一组数据，不是枚举类型）
+     *      2.可以是一个叫做标量的单一值
      * 
      * 
      * 四、标准查询运算符 
@@ -2093,7 +2094,7 @@ namespace WindowsFormsApp1
      *   
      * orderby子句
      *      a.接受一个表达式并根据表达式按顺序返回结果项
-     *      b.默认排序是升序，可以使用ascending和descending关键字显示的设置元素的排序为升序或降序
+     *      b.默认排序是升序，可以使用ascending和descending关键字显式的设置元素的排序为升序或降序
      *      
      *      
      * select...group子句
@@ -2149,7 +2150,7 @@ namespace WindowsFormsApp1
                         where courses.CourseName == "History"
                         select student.LastName;
 
-            //显示所有选择了历史课的学生的名字
+            //显式所有选择了历史课的学生的名字
             foreach (var q in query)
             {
                 Console.WriteLine("Student taking History:{0}", q);
@@ -2261,53 +2262,44 @@ namespace WindowsFormsApp1
         }
     }
 
-
-
-
-
-
-
-
-
-
     #endregion
 
 
     #region 异步编程
     /* 
      * 一、线程
-     * 1.默认情况下，一个进程只包含一个线程，从程序的开始一直执行到结束
-     * 2.线程可以派生其他线程，因此在任意时刻，一个进程都可能包含不同状态的多个线程，
-     * 来执行程序的不同部分
-     * 3.如果一个进程拥有多个线程，它们将共享进程的资源
-     * 4.系统为处理器执行所规划的单元是线程，不是进程
+     *  1.默认情况下，一个进程只包含一个线程，从程序的开始一直执行到结束
+     *  2.线程可以派生其他线程，因此在任意时刻，一个进程都可能包含不同状态的多个线程，
+     *    来执行程序的不同部分
+     *  3.如果一个进程拥有多个线程，它们将共享进程的资源
+     *  4.系统为处理器执行所规划的单元是线程，不是进程
      * 
      * 
      * 二、异步方法
-     * 1.方法头中包含async方法修饰符，修饰符本身并不能创建任何异步操作
-     * 2.包含一个或多个await表达式，表示可以异步完成的任务
-     * 3.必须具备以下三种返回类型。第二种（Task）和第三种（Task<T>）的返回对象表示将在未来完成的工作，
-     * 调用方法和异步方法可以继续执行。  void  Task  Task<T>
-     * 4.异步方法的参数可以为任意类型任意数量，但不能为out或ref参数
-     * 5.按照约定，异步方法的名称应该以Async为后缀
-     * 6.除了方法以外，Lambda表达式和匿名方法也可以作为异步对象
+     *  1.方法头中包含async方法修饰符，修饰符本身并不能创建任何异步操作
+     *  2.包含一个或多个await表达式，表示可以异步完成的任务
+     *  3.必须具备以下三种返回类型。第二种（Task）和第三种（Task<T>）的返回对象表示将在未来完成的工作，
+     *    调用方法和异步方法可以继续执行。  void  Task  Task<T>
+     *  4.异步方法的参数可以为任意类型任意数量，但不能为out或ref参数
+     *  5.按照约定，异步方法的名称应该以Async为后缀
+     *  6.除了方法以外，Lambda表达式和匿名方法也可以作为异步对象
      * 
-     * 7.Task<T>：如果调用方法要从调用中获取一个T类型的值，异步方法的返回类型就必须是Task<T>
-     * 调用方法将通过读取Task的Result属性来获取这个T类型的值
-     *  Task<int> someTask = DoStuff.CalculateSumAsync(5,6);
+     *  7.Task<T>：如果调用方法要从调用中获取一个T类型的值，异步方法的返回类型就必须是Task<T>
+     *    调用方法将通过读取Task的Result属性来获取这个T类型的值
+     *    Task<int> someTask = DoStuff.CalculateSumAsync(5,6);
      *  ...
      *  Console.WriteLine("Value:{0}", someTask.Result);
      *  
      * 
-     * 8.Task：如果调用方法不需要从异步方法中返回某个值，但需要检查异步方法的状态，那么异步方法可以返回
-     * 一个Task类型的对象。这时，即使异步方法中出现了return语句，也不会返回任何东西
+     *  8.Task：如果调用方法不需要从异步方法中返回某个值，但需要检查异步方法的状态，那么异步方法可以返回
+     *    一个Task类型的对象。这时，即使异步方法中出现了return语句，也不会返回任何东西
      *  Task someTask = DoStuff.CalculateSumAsync(5,6);
      *  ...
      *  someTask.Wait();
      *  
      *  
      *  9.void：如果调用方法仅仅想执行异步方法，则不需要与它做任何进一步的交互时，异步方法可以
-     *  返回void类型，即使异步方法包含任何return语句，也不会返回任何东西
+     *    返回void类型，即使异步方法包含任何return语句，也不会返回任何东西
      */
 
     class AsyncClass
@@ -2369,6 +2361,273 @@ namespace WindowsFormsApp1
 
             Task t2 = AsyncClass.DoWorkAsync2();
             t2.Wait();
+        }
+    }
+
+    #endregion
+
+
+    #region 命名空间和程序集
+    /*
+     * 一、程序集：程序集的文件扩展名通常为 .exe 或者  .dll
+     * 
+     *   程序集的四个重要组成部分
+     *      1.程序集的清单：
+     *          a.程序集名称标识符
+     *          b.组成程序集的文件列表
+     *          c.一个指示程序集中内容在哪里的地图
+     *          d.关于引用的其他程序集的信息
+     *      2.类型元数据部分包含该程序集中定义的所有类型的信息。这些信息包含关于每个类型要知道的所有事情
+     *      3.CIL（公共中间语言）部分包含程序集的所有中间代码
+     *      4.资源部分是可选的，但是可以包含图形或语言资源
+     * 
+     * 
+     */
+    #endregion
+
+
+    #region 反射与特性
+    /*
+     * 一、获取Type对象
+     * 
+     */
+    class BaseReflectionClass
+    {
+        public int BaseField = 0;
+    }
+
+    class DerivedReflectionClass : BaseReflectionClass
+    {
+        public int DerivedField = 0;
+    }
+
+    class ReflectionClass
+    {
+        static void Main()
+        {
+            var bc = new BaseReflectionClass();
+            var dc = new DerivedReflectionClass();
+            BaseReflectionClass[] bca = new BaseReflectionClass[] { bc, dc };
+            foreach (var v in bca)
+            {
+                Type t = v.GetType();       //获取类型
+                Console.WriteLine("Object type:{0}", t.Name);
+
+                FieldInfo[] fi = t.GetFields();     //获取字段信息
+                foreach (var f in fi)
+                {
+                    Console.WriteLine("Field :{0}", f.Name);
+                }
+            }
+           /*
+            * Object type: BaseReflectionClass
+            *       Field: BaseField
+            * Object type: DerivedReflectionClass
+            *       Field: DerivedField 
+            *       Field: BaseField     
+            */
+
+            //使用tyoeof运算符来获取Type对象
+            Type tbc = typeof(DerivedReflectionClass);
+            Console.WriteLine("Object type:{0}", tbc.Name);
+        }
+    }
+
+    /*
+     * 二、特性
+     *  允许我们向程序的程序集增加元数据的语言结构。用于保存程序结构信息的某种特殊类型的类
+     *  
+     *  [Serializable]      //声明结构可以被序列化 特性
+     *  public class MyClass
+     *  {
+     *      ...
+     *  }
+     *  
+     *  [MyAttribute("Simple class", "Version 3.57")]   //带有参数的特性
+     *  public class MyClass
+     *  {
+     *      ...
+     *  }
+     *  
+     */
+
+    //1.Obsolete特性
+    //  警告团队成员不要使用旧方法，可以使用Obsolete特性将程序结构标注为过期的，并在代码编译时显示有用的警告信息
+    class ObsoleteProgram
+    {
+        
+        [Obsolete("Use method SuperPrintOut")]  //将特性应用到方法，将PrintOut标注为过期
+        static void PrintOut(string str)
+        {
+            Console.WriteLine(str);
+        }
+
+        [Obsolete("Use method SuperPrintOut", true)] //指定目标是否应该被标记为错误而不仅仅升级警告
+        static void PrintOut2(string str)
+        {
+            Console.WriteLine(str);
+        }
+
+        static void Main(string[] args)
+        {
+            PrintOut("Start of Main");  //调用了obsolete方法,
+        }
+    }
+
+    //2.Conditional 特性
+    //  a.如果定义了编译符号，那么编译器会包含所有调用这个方法的代码，这和普通方法没有区别。
+    //  b.如果没有定义编译符号，那么编译器会忽略代码中这个方法的所有调用
+    /*
+    #define DoTrace
+    using System;
+    using System.Diagnostics;
+    namespace AttributesConditional
+    {
+        class ConditionalProgram
+        {
+            [Obsolete("DoTrace")]  
+            static void TraceMessage(string str)
+            {
+                Console.WriteLine(str);
+            }
+
+            static void Main()
+            {
+                TraceMessage("Start of main");
+                Console.WriteLine("Doing work in main");
+                TraceMessage("End of main");
+            }
+        }
+    }
+    */
+
+    //此时输出和正常代码一致
+    //Start of main
+    //Doing work in main
+    //End of main
+
+    //如果注释第一行的 #define DoTrace，那么编译器将不会插入TraceMessage的调用代码，
+    //运行后输出
+    //Doing work in main
+
+
+
+
+    //3.调用者的信息特性
+    //  CallerFilePath 访问文件路径
+    //  CallerLineNumber 代码行数
+    //  CallerMemberName 调用成员的名称
+    //  这三个特性只能用于可选参数
+
+    public static class CallerClass
+    {
+        public static void MyTrace(string message,
+            [CallerFilePath] string fileName = "",
+            [CallerLineNumber] int lineNumber = 0,
+            [CallerMemberName] string memberName = "")
+        {
+            Console.WriteLine("fileName:{0}", fileName);
+            Console.WriteLine("lineNumber:{0}", lineNumber);
+            Console.WriteLine("memberName:{0}", memberName);
+            Console.WriteLine("Message:{0}", message);
+        }
+
+        public static void Main()
+        {
+            MyTrace("Simple message");
+        }
+        //fileName：Z:\StudyProjects\CSharpStudyNotes\CSharpStudyNotes\Program.cs
+        //lineNumber：2537             //注释：MyTrace()的调用行数
+        //memberName：Main
+        //Message：Simple message
+    }
+
+
+    //4.DubuggerStepThrough特性
+    //  a.告诉编译器在执行目标代码时，不要进入该方法调试
+
+
+
+    //5.自定义特性类
+    /*  a.声明一个派生自System.Attribute的类
+     *  b.给它起一个以后缀Attribute结尾的名字
+     *  c.安全起见，通常建议你声明一个sealed的特性类
+     *  d.特性类的公共成员只能是：字段、属性、构造函数
+     *  e.声明构造函数时，必须使用类全名，包括后缀Attribute。只有在应用特性时使用短名称。 
+     *  f.特性类应该表示目标结构的一些状态
+     */
+
+
+    //6.限制特性的使用
+    /*  AttributeUsage预定义特性
+     *      1.可以使用它来限制特性使用在某个目标类型上
+     *      2.构造函数接受单个位置参数，可接受的目标类型是AttributeTargets枚举的成员
+     */
+
+
+
+    //7.访问特性、使用IsDefined方法
+    /*  1.可以使用Type对象的IsDefined方法来检测某个特性是否应用到了某个类上
+     */
+
+
+    //8.访问特性、使用GetCustomAttributes方法
+    /*  1.返回应用到结构的特性的数组
+     *  2.返回的对象是object数组，因此必须强制转换为相应的特性类型
+     *  3.布尔值参数指定是否搜索继承树来查找特性
+     *  
+     */
+
+    //构造函数只列出一个形参，可通过命令参数给构造参数3个实参
+    //MyAttribute特性名              Attribute后缀    
+    public sealed class MyAttributeAttribute :System.Attribute
+    {
+        public string Descriotion;
+        public string Ver;
+        public string Reviewer;
+        public MyAttributeAttribute(string desc)
+        {
+            Descriotion = desc;
+        }
+    }
+
+    //应用特性
+    [MyAttribute("An excellernt class", Ver = "7.15.33")]
+    class MyAttributeProgram
+    {
+
+    }
+
+    //应用多个特性，限制自定义特性MyAttribute只能应用到方法
+    [MyAttribute("An excellernt class2", Reviewer = "Amy McArthur", Ver = "7.15.33"), AttributeUsage(AttributeTargets.Method)]
+    class MyAttributeProgram2:System.Attribute
+    {
+
+    }
+
+    
+    class MainProgram
+    {
+        static void Main()
+        {
+            //判断某特性是否应用到了这个类
+            MyAttributeProgram mc = new MyAttributeProgram();
+            Type t = mc.GetType();
+            bool isDefined = t.IsDefined(typeof(MyAttributeAttribute), false);
+
+            //返回应用到结构的特性的数组
+            Type t2 = typeof(MyAttributeProgram);
+            object[] AttArr = t2.GetCustomAttributes(false);
+            foreach(Attribute a in AttArr)
+            {
+                MyAttributeAttribute arr = a as MyAttributeAttribute;
+                if(arr != null)
+                {
+                    Console.WriteLine("Descriotion:{0}", arr.Descriotion);
+                    Console.WriteLine("Ver:{0}", arr.Ver);
+                    Console.WriteLine("Reviewer:{0}", arr.Reviewer);
+                }
+            }
         }
     }
 
